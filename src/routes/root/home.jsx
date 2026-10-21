@@ -6,12 +6,27 @@ import Footer from "../../components/Footer"
 const Home = () => {
   return (
     <section className="">
-      <div className="relative h-screen w-full bg-[url('/images/hero-img.png')] bg-no-repeat">
-        <div className="h-full w-full absolute top-0 left-0 bg-linear-to-r from-white/60 to-transparent"></div>
-        <div className="absolute top-0 left-0 flex flex-col justify-end items-start h-full w-full pl-28 pb-20 gap-3">
-          <h1 className="text-[clamp(3rem,7vw,9rem)] font-extrabold leading-none">Plain Your<br />Trip with Ease</h1>
-          <p>Customize your travel itinerary in minutes—pick your<br />destination, set your preferences, and explore with confidence.</p>
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-md cursor-pointer">Get Started</button>
+      <div className="relative min-h-[85vh] sm:min-h-screen w-full bg-[url('/images/hero-img.png')] bg-cover bg-center bg-no-repeat">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/50 to-transparent" />
+
+        {/* Hero Content */}
+        <div className="relative z-10 flex min-h-[85vh] sm:min-h-screen w-full flex-col items-start justify-end gap-4 px-5 pb-12 sm:px-10 sm:pb-16 md:px-16 lg:px-20 xl:px-28 xl:pb-20">
+          <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl xl:text-[clamp(5rem,7vw,9rem)]">
+            Plan Your
+            <br />
+            Trip with Ease
+          </h1>
+
+          <p className="max-w-xl text-sm leading-6 text-gray-800 sm:text-base sm:leading-7 md:text-lg">
+            Customize your travel itinerary in minutes—pick your
+            <br className="hidden sm:block" />
+            destination, set your preferences, and explore with confidence.
+          </p>
+
+          <button className="mt-2 rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 sm:text-base">
+            Get Started
+          </button>
         </div>
       </div>
       <ImageGallery />
@@ -22,10 +37,7 @@ const Home = () => {
         </div>
         <Trips total={10} />
       </div>
-      <div className="">
-        <Footer/>
-      </div>
-
+      <Footer />
     </section>
   )
 }
