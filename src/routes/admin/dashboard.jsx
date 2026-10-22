@@ -29,7 +29,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <section className="flex h-full w-full flex-col gap-6">
+    <section className="flex min-h-full w-full min-w-0 flex-col gap-5 p-3 sm:gap-6 sm:p-5 lg:p-6 xl:p-8">
       <AdminTop
         title={`Welcome ${user?.name ?? "Admin"} 👋`}
         des="Track activity, trends, and popular destinations in real time"
@@ -37,28 +37,40 @@ const Dashboard = () => {
         to="/admin/trips/create"
       />
 
-      <Card />
+      {/* Dashboard statistics */}
+      <div className="w-full min-w-0">
+        <Card />
+      </div>
 
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Trips</h2>
+      {/* Trips section */}
+      <div className="flex min-w-0 flex-col gap-4">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-xl font-semibold sm:text-2xl">
+            Trips
+          </h2>
 
           <Link
             to="/admin/trips"
-            className="text-sm font-medium text-blue-600 hover:underline"
+            className="shrink-0 text-sm font-medium text-blue-600 hover:underline sm:text-base"
           >
             View all
           </Link>
         </div>
 
         {loading ? (
-          <p className="py-10 text-center">Loading trips...</p>
+          <div className="flex min-h-40 items-center justify-center">
+            <p className="text-sm text-gray-500 sm:text-base">
+              Loading trips...
+            </p>
+          </div>
         ) : trips.length === 0 ? (
-          <p className="py-10 text-center text-gray-500">
-            No trips found.
-          </p>
+          <div className="flex min-h-40 items-center justify-center">
+            <p className="text-center text-sm text-gray-500 sm:text-base">
+              No trips found.
+            </p>
+          </div>
         ) : (
-          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid w-full min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
             {trips.map((trip) => {
               let details;
               let images;
@@ -89,50 +101,58 @@ const Dashboard = () => {
                 <Link
                   key={trip.$id}
                   to={`/admin/trips/${trip.$id}`}
-                  className="overflow-hidden rounded-xl shadow-md transition-shadow hover:shadow-lg"
+                  className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg"
                 >
-                  <div className="flex h-[50vh] min-h-[350px] flex-col">
+                  {/* Trip image */}
+                  <div className="relative h-48 w-full overflow-hidden sm:h-52 lg:h-56">
                     {image ? (
                       <img
                         src={image}
-                        alt={details?.name || details?.country || "Trip"}
-                        className="h-1/2 w-full object-cover object-center"
+                        alt={
+                          details?.name ||
+                          details?.country ||
+                          "Trip"
+                        }
+                        loading="lazy"
+                        className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex h-1/2 items-center justify-center bg-gray-100">
+                      <div className="flex h-full items-center justify-center bg-gray-100 text-sm text-gray-500">
                         No image available
                       </div>
                     )}
+                  </div>
 
-                    <div className="flex flex-1 flex-col gap-3 px-5 py-4">
-                      <h3 className="text-2xl font-semibold">
-                        {details?.country || "Unknown destination"}
-                      </h3>
+                  {/* Trip information */}
+                  <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
+                    <h3 className="break-words text-lg font-semibold leading-snug sm:text-xl">
+                      {details?.country || "Unknown destination"}
+                    </h3>
 
-                      {details?.location?.city && (
-                        <p className="flex items-center gap-2 text-sm text-gray-600">
-                          <img
-                            src="/icons/location-mark.svg"
-                            alt=""
-                            className="h-4 w-4"
-                          />
-                          {details.location.city}
-                        </p>
+                    {details?.location?.city && (
+                      <p className="flex items-start gap-2 break-words text-sm text-gray-600">
+                        <img
+                          src="/icons/location-mark.svg"
+                          alt=""
+                          aria-hidden="true"
+                          className="mt-0.5 h-4 w-4 shrink-0"
+                        />
+                        <span>{details.location.city}</span>
+                      </p>
+                    )}
+
+                    <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+                      {details?.budget && (
+                        <span className="max-w-full break-words rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-800 sm:px-4">
+                          {details.budget}
+                        </span>
                       )}
 
-                      <div className="flex flex-wrap items-center gap-2">
-                        {details?.budget && (
-                          <span className="rounded-full bg-green-200 px-4 py-2 text-xs">
-                            {details.budget}
-                          </span>
-                        )}
-
-                        {details?.groupType && (
-                          <span className="rounded-full bg-pink-200 px-4 py-2 text-xs">
-                            {details.groupType}
-                          </span>
-                        )}
-                      </div>
+                      {details?.groupType && (
+                        <span className="max-w-full break-words rounded-full bg-pink-100 px-3 py-1.5 text-xs font-medium text-pink-800 sm:px-4">
+                          {details.groupType}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </Link>

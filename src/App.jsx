@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from "react-router"
-import { AdminLayout, AiTrips, AllUsers, AuthLayout, CreateTrip, Dashboard, Home, Login, Register, RootLayout, Separate, TripLayout } from "./routes"
+import { AdminLayout, AiTrips, AllUsers, AuthLayout, CreateTrip, Dashboard, Home, Login, Register, RootLayout, Separate, ThankYou, TripLayout } from "./routes"
 import EachTrip from "./components/EachTrip"
 import Payment from "./components/Payment"
 
@@ -23,6 +23,7 @@ const App = () => {
       <Route element={<RootLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/trips/:id" element={<EachTrip />} />
+        <Route path="/thankyou" element={<ThankYou />} />
       </Route>
       <Route path="/trips/strip/:id" element={<Payment />} />
     </Routes>

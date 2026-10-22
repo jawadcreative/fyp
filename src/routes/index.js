@@ -10,6 +10,7 @@ import Separate from "./admin/trip/separate";
 import Register from "./auth/register";
 import Login from "./auth/login";
 import AuthLayout from "./auth/authLayout";
+import ThankYou from "./root/thankyou";
 
 export {
   Register,
@@ -23,5 +24,6 @@ export {
   TripLayout,
   CreateTrip,
   Separate,
-  AuthLayout
+  AuthLayout,
+  ThankYou
 };

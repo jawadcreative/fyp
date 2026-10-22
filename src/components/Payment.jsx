@@ -1,11 +1,10 @@
-
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { replace, useNavigate, useParams } from "react-router";
 import { getTripById } from "../appwrite/trip";
-import { ArrowLeft, LucideApple } from "lucide-react";
 
 const Payment = () => {
     const { id } = useParams();
+    const navigate = useNavigate()
 
     const [trip, setTrip] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -105,7 +104,7 @@ const Payment = () => {
                         <img
                             src={imageUrls?.[0]}
                             alt={details.country}
-                            className="h-52 w-full rounded-xl object-cover sm:h-64 md:h-72 lg:h-[30vh] lg:max-h-80"
+                            className="h-52 w-[30vw] rounded-xl object-cover sm:h-64 md:h-72 lg:h-[40vh] lg:max-h-80"
                         />
 
                         <div className="flex flex-col gap-1">
@@ -287,7 +286,9 @@ const Payment = () => {
                         </div>
 
                         {/* Pay Button */}
-                        <button
+                        <button onClick={() => {
+                            navigate('/thankyou', { replace: true })
+                        }}
                             type="submit"
                             className="mt-1 h-11 w-full cursor-pointer rounded-md bg-[#3d4359] px-4 text-sm font-semibold text-white transition hover:bg-[#2d3348] sm:h-12 sm:text-base"
                         >
