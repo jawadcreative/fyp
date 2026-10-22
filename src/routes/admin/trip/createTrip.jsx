@@ -187,7 +187,7 @@ const CreateTrip = () => {
           type="submit"
           className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-4 py-3 text-white transition hover:bg-blue-700"
         >
-          {loading ? (<img src='/icons/loader.svg' alt="loader" className="loader h-6 w-6" />) : (<p className="flex items-center gap-2 tracking-widest">Generate Trip <img src="/icons/magic-star.svg" alt="" /></p>)}
+          {loading ? (<img src='/icons/loader.svg' alt="loader" className="loader" />) : (<p className="flex items-center gap-2 tracking-widest">Generate Trip <img src="/icons/magic-star.svg" alt="" /></p>)}
         </button>
       </form>
     </div>

@@ -68,8 +68,10 @@ const Login = () => {
                         required
                     />
 
-                    <button type="submit" disabled={loading} className="bg-blue-600 text-white py-2 cursor-pointer duration-100 rounded-sm hover:scale-[1.01]">
-                        {loading ? "Logging in..." : "Login"}
+                    <button type="submit" disabled={loading} className="bg-blue-600 text-white py-2 cursor-pointer duration-100 rounded-sm hover:scale-[1.01] flex items-center justify-center">
+                        {loading ? (
+                            <img src="/icons/loader.svg" alt="loader" className="loader" />
+                        ) : "Login"}
                     </button>
                 </form>
                 <div className="flex items-center gap-2">

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 
 const Register = () => {
+    const [load, setLoad] = useState(false);
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -26,10 +27,10 @@ const Register = () => {
     };
 
     const handleSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault();
         setError("");
         setSuccess("");
-
         try {
             const result = await register(form);
 
@@ -39,6 +40,8 @@ const Register = () => {
             navigate("/", { replace: true });
         } catch (error) {
             setError(error.message || "Registration failed.");
+        }finally{
+            setLoading(false)
         }
     };
 
@@ -81,8 +84,8 @@ const Register = () => {
                         required
                     />
 
-                    <button type="submit" disabled={loading} className="bg-blue-600 text-white py-2 cursor-pointer duration-100 rounded-sm hover:scale-[1.01]">
-                        {loading ? "Registering..." : "Register"}
+                    <button type="submit" disabled={loading} className="bg-blue-600 text-white py-2 cursor-pointer duration-100 rounded-sm hover:scale-[1.01] flex items-center justify-center">
+                        {load ? <img src="/icons/loader.svg" alt="loader" className="loader" /> : "Register"}
                     </button>
                 </form>
 

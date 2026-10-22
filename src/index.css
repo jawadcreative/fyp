@@ -19,13 +19,15 @@ body {
 
 .loader {
   animation: spin 1s linear infinite;
+  height: 24px;
+  width: 24px;
 }
 
 @keyframes spin {
-  0%{
+  0% {
     rotate: 0deg;
   }
-  100%{
+  100% {
     rotate: 360deg;
   }
 }
