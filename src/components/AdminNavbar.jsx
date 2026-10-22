@@ -1,6 +1,8 @@
 import { Link, NavLink } from "react-router";
-import { LayoutDashboard, Users, Map, PanelLeftClose, PanelLeftOpen, X,
+import {
+  LayoutDashboard, Users, Map, PanelLeftClose, PanelLeftOpen, X,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const navLinks = [
   {
@@ -21,6 +23,7 @@ const navLinks = [
 ];
 
 const AdminNavbar = ({ isOpen, setIsOpen, isCollapsed, setIsCollapsed, }) => {
+  const { user, logout } = useAuth()
   return (
     <>
       {/* Mobile overlay */}
@@ -130,6 +133,15 @@ const AdminNavbar = ({ isOpen, setIsOpen, isCollapsed, setIsCollapsed, }) => {
             );
           })}
         </nav>
+
+        <div className="p-5 flex items-center gap-3">
+          <img src={user?.avatar} alt="" className="h-8 w-8 rounded-full" />
+          <div className="">
+            <p className="leading-none">{user.name}</p>
+            <p className="leading-none text-xs">{user.email}</p>
+          </div>
+          <button onClick={logout} className="cursor-pointer"><img src="/icons/logout.svg" alt="logout" /></button>
+        </div>
 
         {/* Expand control in collapsed desktop mode */}
         {isCollapsed && (

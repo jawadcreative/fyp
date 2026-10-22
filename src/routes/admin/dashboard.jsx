@@ -4,20 +4,22 @@ import Card from "../../components/Card";
 import { useAuth } from "../../context/AuthContext";
 import { getAllTrips } from "../../appwrite/trip";
 import { Link } from "react-router";
+import UserChart from "../../components/userChart";
+
 
 const Dashboard = () => {
+  const { allUsers, refreshAllUsers } = useAuth();
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { user } = useAuth();
 
+  // Fetch recent trips
   useEffect(() => {
     const fetchTrips = async () => {
-      setLoading(true);
-
       try {
-        const data = await getAllTrips(4);
-        setTrips(data);
+        const data = await getAllTrips(3);
+        setTrips(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Failed to fetch trips:", error);
       } finally {
@@ -28,8 +30,22 @@ const Dashboard = () => {
     fetchTrips();
   }, []);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        await refreshAllUsers(1, 7);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [refreshAllUsers]);
+
+  const users = (allUsers?.users ?? []).slice(0, 7);
+
   return (
-    <section className="flex min-h-full w-full min-w-0 flex-col gap-5 p-3 sm:gap-6 sm:p-5 lg:p-6 xl:p-8">
+    <section className="flex w-full min-w-0 flex-col gap-5 p-3 sm:gap-6 sm:p-5 lg:p-6 xl:p-8">
       <AdminTop
         title={`Welcome ${user?.name ?? "Admin"} 👋`}
         des="Track activity, trends, and popular destinations in real time"
@@ -42,7 +58,7 @@ const Dashboard = () => {
         <Card />
       </div>
 
-      {/* Trips section */}
+      {/* Trips */}
       <div className="flex min-w-0 flex-col gap-4">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-xl font-semibold sm:text-2xl">
@@ -70,7 +86,7 @@ const Dashboard = () => {
             </p>
           </div>
         ) : (
-          <div className="grid w-full min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid w-full min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
             {trips.map((trip) => {
               let details;
               let images;
@@ -103,7 +119,6 @@ const Dashboard = () => {
                   to={`/admin/trips/${trip.$id}`}
                   className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg"
                 >
-                  {/* Trip image */}
                   <div className="relative h-48 w-full overflow-hidden sm:h-52 lg:h-56">
                     {image ? (
                       <img
@@ -123,7 +138,6 @@ const Dashboard = () => {
                     )}
                   </div>
 
-                  {/* Trip information */}
                   <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
                     <h3 className="break-words text-lg font-semibold leading-snug sm:text-xl">
                       {details?.country || "Unknown destination"}
@@ -160,6 +174,67 @@ const Dashboard = () => {
             })}
           </div>
         )}
+      </div>
+
+      {/* Analytics and recent users */}
+      <div className="grid min-w-0 grid-cols-1 items-start gap-5 lg:grid-cols-2">
+        {/* Registration chart */}
+        <div className="min-w-0">
+          <UserChart />
+        </div>
+
+        {/* Latest user signups */}
+        <div className="min-w-0 bg-white rounded-xl border border-gray-100 p-5 shadow-sm sm:p-4">
+          <h2 className="border-b border-gray-100 pb-4 text-lg font-semibold text-gray-900">
+            Latest user signups
+          </h2>
+
+          <div className="mt-4">
+            <div className="grid grid-cols-[minmax(0,1fr)_100px] gap-3 px-3 py-3 text-[10px] font-medium uppercase tracking-wide text-gray-400 sm:grid-cols-[minmax(0,1fr)_120px] sm:px-4">
+              <span>Name</span>
+              <span>Itinerary created</span>
+            </div>
+
+            {users.length === 0 ? (
+              <p className="py-8 text-center text-sm text-gray-500">
+                No users found.
+              </p>
+            ) : (
+              <div className="space-y-1">
+                {users.map((item) => (
+                  <div
+                    key={item.$id}
+                    className="grid min-h-[60px] grid-cols-[minmax(0,1fr)_100px] items-center gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-gray-100 sm:grid-cols-[minmax(0,1fr)_120px] sm:px-4"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <img
+                        src={
+                          item.avatar ||
+                          "/images/default-avatar.png"
+                        }
+                        alt=""
+                        className="h-9 w-9 shrink-0 rounded-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/images/default-avatar.png";
+                        }}
+                      />
+
+                      <span className="truncate text-xs font-medium text-gray-900 sm:text-sm">
+                        {item.name || "Unknown user"}
+                      </span>
+                    </div>
+
+                    <span className="text-sm text-gray-700">
+                      {item.itineraryCount ?? item.tripsCount ?? 0}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
       </div>
     </section>
   );
