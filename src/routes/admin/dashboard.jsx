@@ -4,7 +4,7 @@ import Card from "../../components/Card";
 import { useAuth } from "../../context/AuthContext";
 import { getAllTrips } from "../../appwrite/trip";
 import { Link } from "react-router";
-import UserChart from "../../components/userChart";
+import UserChart from "../../components/UserChart";
 
 
 const Dashboard = () => {
